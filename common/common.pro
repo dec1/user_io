@@ -12,8 +12,8 @@ VERSION = 0.1.0
 CONFIG += staticlib
 
 
-INCLUDEPATH += ./src/include
-VPATH += ./src/include
+INCLUDEPATH += ./src
+VPATH += ./src
 
 include("./common_h.pri")
 include("./common_cpp.pri")
