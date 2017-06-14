@@ -9,8 +9,6 @@ include("../common/common_h.pri")
 include("./common_base.pri")
 
 
-# update include path (relative to client)
-# INCLUDEPATH += ../common/src
 
 
 # Link the debug/release version of the lib

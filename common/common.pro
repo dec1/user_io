@@ -19,8 +19,8 @@ include("./common_h.pri")
 include("./common_cpp.pri")
 include("./common_base.pri")
 
-TRANSLATIONS = translation.de.ts
+TRANSLATIONS = .res/translation.de.ts
 
-RESOURCES += ./res.qrc
+RESOURCES += ./res/res.qrc
 
 
