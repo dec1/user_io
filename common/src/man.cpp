@@ -7,6 +7,8 @@
 //----------------------------------
 tMan::tMan()
 {
+
+
     _LocaleMan = new tLocaleMan(this);
     _DataMan = new tDataMan(this);
     _LogMan = new tLogMan(this);

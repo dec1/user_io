@@ -1,7 +1,0 @@
-
-
-
-
-proper readme for github
-
-
