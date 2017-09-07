@@ -31,3 +31,31 @@ The app loads the appropriate translation files at startup - currently German or
 - The data is currently exported to a file, but the separation of data marshalling and persistence makes passing the data instead to eg a web service trivial. The orthogonal implementation thereof also ensures that passing/saving the data in different format (eg xml instead of or in addition to the current json) is easily realizable. The standardized format of the file (json) ensures that third party software have minimum difficulty reading/parsing it.
 - Currently the data entered by the user is sorted in ascending order before its saved. To use a different sorting method simply pass a different algorithm as a parameter to the sort function (Strategy pattern)
 - A version number is also saved to the file in a preamble (header section) to allow the possibility of changing the format in a future version of the software without breaking backward compatibility
+
+### Example data persisted as Json (in *werte.txt*)
+```json
+{
+    "body": {
+        "data": [
+            {
+                "id": 0,
+                "type": "double",
+                "value": "2.5"
+            },
+            {
+                "id": 1,
+                "type": "double",
+                "value": "1.5"
+            },
+            {
+                "id": 2,
+                "type": "int",
+                "value": "2"
+            }
+        ]
+    },
+    "head": {
+        "version": "1.0.0"
+    }
+}
+```
