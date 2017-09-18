@@ -11,7 +11,9 @@ TEMPLATE = app
 include("../common/common_client.pri")
 
 
-SOURCES +=  ./src/test.cpp 
+SOURCES +=  ./src/test.cpp \ 
+    src/test_mock.cpp
 
-HEADERS +=  ./src/test.h
+HEADERS +=  ./src/test.h \
+    src/test_mock.h
 

@@ -16,6 +16,9 @@ private slots:
 
     void sortData();
     void readWriteData();
+
+    void testMock();
+
 protected:
     tDataMan * _DataMan;
     tDataElem * _Data0;

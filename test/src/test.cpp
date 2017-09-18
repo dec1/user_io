@@ -1,13 +1,18 @@
 #include "test.h"
+#include "test_mock.h"
+
 #include "dataelem.h"
 #include "man.h"
 #include "dataman.h"
 #include "dataio.h"
 #include "datamarshal.h"
 
+
 #include <QObject>
 #include <QtTest/QtTest>
 
+#include "mock/fakeit.hpp"
+using namespace fakeit;
 //-----------------------------
 QTEST_MAIN(tTest)
 //-----------------------------
@@ -52,6 +57,23 @@ void tTest::sortData()
               (ElemsSorted.at(1) == _Data2) &&
               (ElemsSorted.at(2) == _Data0)
               , "tTest::sortData() - data not sorted in ascending order");
+}
+//----------------------------------
+struct SomeInterface {
+   virtual int foo(int) { return 5;}
+   virtual int bar(int,int) = 0;
+};
+
+//-----------------------------
+void tTest::testMock()
+{
+    Mock<SomeInterface> mock;
+    When(Method(mock,foo)).AlwaysReturn(2);
+
+    int tst1 = mock().foo(1);
+    int tst2 = mock().foo(2);
+    int tst3 = mock().foo(3);
+    QVERIFY2(mock().foo(3) == 2, "foo ddint return right answer");
 }
 //-----------------------------
 void tTest::readWriteData()
