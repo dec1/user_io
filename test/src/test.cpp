@@ -58,23 +58,91 @@ void tTest::sortData()
               (ElemsSorted.at(2) == _Data0)
               , "tTest::sortData() - data not sorted in ascending order");
 }
+
+
+
+
+
+
+#include "mock/fakeit.hpp"
+using namespace fakeit;
 //----------------------------------
 struct SomeInterface {
-   virtual int foo(int) { return 5;}
+   virtual int foo() { return 0;} // "usually" succeds (sub classes may not!)
    virtual int bar(int,int) = 0;
 };
-
+//----------------------------------
+class MyClass
+{
+public:
+    MyClass(SomeInterface * Ed) : _ExternalDep(Ed) {}
+    bool doSomething() { return _ExternalDep && _ExternalDep->foo() == 0;}
+private:
+    SomeInterface * _ExternalDep;
+};
 //-----------------------------
 void tTest::testMock()
 {
     Mock<SomeInterface> mock;
-    When(Method(mock,foo)).AlwaysReturn(2);
+    When(Method(mock,foo)).AlwaysReturn(-1);  // mock extenal dep to "fail" deterministically!
 
-    int tst1 = mock().foo(1);
-    int tst2 = mock().foo(2);
-    int tst3 = mock().foo(3);
-    QVERIFY2(mock().foo(3) == 2, "foo ddint return right answer");
+    QVERIFY2(mock().foo() == -1, "foo didnt return right answer");  // verify that foo "fails"
+
+    // MyClass has a dependency on SomeInterface (eg it calls foo())
+    SomeInterface & Si = mock.get();
+    MyClass* MyObj = new MyClass(&Si);
+    bool ok = MyObj->doSomething(); // calls SomeInterface::foo() which we have made deterministic for this test
+    QVERIFY2(ok, "MyClass didnt return expected answer");
 }
+
+//// Verify foo was invoked at least once. (The four lines do exactly the same)
+//Verify(Method(mock,foo));
+//Verify(Method(mock,foo)).AtLeastOnce();
+
+//Mock<SomeInterface> mock;
+//// Stub a method to return a value once
+//When(Method(mock,foo)).Return(1);
+
+//// Stub multiple return values (The next two lines do exactly the same)
+//When(Method(mock,foo)).Return(1,2,3);
+//When(Method(mock,foo)).Return(1).Return(2).Return(3);
+
+//// Return the same value many times (56 in this example)
+//When(Method(mock,foo)).Return(56_Times(1));
+
+//// Return many values many times (First 100 calls will return 1, next 200 calls will return 2)
+//When(Method(mock,foo)).Return(100_Times(1), 200_Times(2));
+
+//// Always return a value (The next two lines do exactly the same)
+//When(Method(mock,foo)).AlwaysReturn(1);
+//Method(mock,foo) = 1;
+//// Stub foo(1) to return the value '100' once (The next two lines do the same)
+//When(Method(mock,foo).Using(1)).Return(100);
+//When(Method(mock,foo)(1)).Return(100);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //-----------------------------
 void tTest::readWriteData()
 {
